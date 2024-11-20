@@ -1,6 +1,4 @@
-import modules.PyramidService;
-
-import java.util.List;
+import services.PyramidService;
 
 public class Application {
 
