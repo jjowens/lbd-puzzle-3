@@ -13,9 +13,11 @@ import java.util.List;
 public class PyramidService {
 
     private final String fileName;
+    private final HexCalculator calculator;
 
     public PyramidService(String fileName) {
         this.fileName = fileName;
+        this.calculator = new HexCalculator();
     }
 
     public List<String> readFile() throws IOException, URISyntaxException {
@@ -34,6 +36,16 @@ public class PyramidService {
         return lines;
     }
 
+    public Long[] parseLinesOfText(List<String> linesOfText) {
+        List<Long> longlist = new ArrayList<>();
 
+        for(int idx=0; idx<linesOfText.size(); idx++) {
+            longlist.add(calculator.findMaxValue(linesOfText.get(idx)));
+        }
+
+        Long[] list = new Long[longlist.size()];
+
+        return list;
+    }
 
 }
