@@ -1,0 +1,39 @@
+package modules;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PyramidService {
+
+    private final String fileName;
+
+    public PyramidService(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public List<String> readFile() throws IOException, URISyntaxException {
+        List<String> lines = new ArrayList<>();
+
+        try {
+            InputStream inputStream = ClassLoader.getSystemResourceAsStream(fileName);
+            if (inputStream != null) {
+                lines = new BufferedReader(new InputStreamReader(inputStream)).lines().toList();
+                inputStream.close();
+            }
+        } catch (IOException ioEx) {
+            throw ioEx;
+        }
+
+        return lines;
+    }
+
+
+
+}
