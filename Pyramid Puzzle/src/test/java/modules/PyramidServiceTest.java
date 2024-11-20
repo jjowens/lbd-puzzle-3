@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PyramidServiceTest {
     PyramidService pyramidService;
+    PyramidHelper pyramidHelper = new PyramidHelper();
 
     public static final String[] EXAMPLE_FILES = new String[]{"example1.txt", "example2.txt"};
 
@@ -47,7 +48,7 @@ class PyramidServiceTest {
             optimalPath = pyramidService.parseLinesOfText(lines);
 
             assertTrue(optimalPath.length > 0);
-            System.out.println(StringUtils.join(ArrayUtils.toObject(optimalPath), " - "));
+            System.out.println(pyramidHelper.exportLongArrayTotal(optimalPath, " + "));
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
             fail();

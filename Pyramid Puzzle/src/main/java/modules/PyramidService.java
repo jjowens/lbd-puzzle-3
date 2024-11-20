@@ -44,6 +44,7 @@ public class PyramidService {
         }
 
         Long[] list = new Long[longlist.size()];
+        longlist.toArray(list);
 
         return list;
     }
