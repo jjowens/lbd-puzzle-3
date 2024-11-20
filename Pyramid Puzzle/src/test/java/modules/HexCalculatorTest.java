@@ -3,12 +3,10 @@ package modules;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HexCalculatorTest {
     HexCalculator hexCalculator;
@@ -24,28 +22,24 @@ public class HexCalculatorTest {
     @Test
     public void splitLineInto3Columns() {
         String[] result = hexCalculator.splitColumns(shortLineOfText);
-        assertEquals(result.length, 3);
+        assertEquals(3, result.length);
     }
 
     @DisplayName("split line into 12 columns")
     @Test
     public void splitLineInto12Columns() {
         String[] result = hexCalculator.splitColumns(longLineOfText);
-        assertEquals(result.length, 12);
+        assertEquals(12, result.length);
     }
 
-    @DisplayName("parse 7c as 124")
-    @Test
-    public void parse7c() {
-        Long result = hexCalculator.parseHexValue("7c");
-        assertEquals(result, 124);
-    }
-
-    @DisplayName("parse 9a as 154")
-    @Test
-    public void parse9a() {
-        Long result = hexCalculator.parseHexValue("9a");
-        assertEquals(result, 154);
+    @DisplayName("parse a list of hexadecimals")
+    @ParameterizedTest
+    @CsvSource(value = {"7c:124", "9a:154"}, delimiter = ':')
+    public void parse_hexadecimals(String input, String expected) {
+        setup();
+        Long result = hexCalculator.parseHexValue(input);
+        int expectedInt = Integer.parseInt(expected);
+        assertEquals(expectedInt, result);
     }
 
     @DisplayName("find max value from short line of text")
@@ -53,7 +47,7 @@ public class HexCalculatorTest {
     public void findMaxValueFrom_ShortLineOfText() {
         Long result = hexCalculator.findMaxValue(shortLineOfText);
 
-        assertEquals(result, 169);
+        assertEquals(169, result);
     }
 
     @DisplayName("find max value from long line of text")
@@ -61,7 +55,7 @@ public class HexCalculatorTest {
     public void findMaxValueFrom_LongLineOfText() {
         Long result = hexCalculator.findMaxValue(longLineOfText);
 
-        assertEquals(result, 193);
+        assertEquals(193, result);
     }
 
 }
