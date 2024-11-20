@@ -32,7 +32,6 @@ class PyramidServiceTest {
             fail();
 
         }
-
     }
 
     @DisplayName("Parse Example files")
@@ -45,7 +44,7 @@ class PyramidServiceTest {
 
         try {
             lines = pyramidService.readFile();
-            optimalPath = pyramidService.parseLinesOfText(lines);
+            optimalPath = pyramidService.getMaximumValuesFromLinesOfText(lines);
 
             assertTrue(optimalPath.length > 0);
             System.out.println(pyramidHelper.exportLongArrayTotal(optimalPath, " + "));

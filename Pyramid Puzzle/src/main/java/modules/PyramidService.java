@@ -14,6 +14,7 @@ public class PyramidService {
 
     private final String fileName;
     private final HexCalculator calculator;
+    private final PyramidHelper pyramidHelper = new PyramidHelper();
 
     public PyramidService(String fileName) {
         this.fileName = fileName;
@@ -36,7 +37,7 @@ public class PyramidService {
         return lines;
     }
 
-    public Long[] parseLinesOfText(List<String> linesOfText) {
+    public Long[] getMaximumValuesFromLinesOfText(List<String> linesOfText) {
         List<Long> longlist = new ArrayList<>();
 
         for(int idx=0; idx<linesOfText.size(); idx++) {
@@ -47,6 +48,22 @@ public class PyramidService {
         longlist.toArray(list);
 
         return list;
+    }
+
+    public String getOptimalPath() {
+        String results = "";
+        List<String> lines;
+        Long[] optimalPath;
+
+        try {
+            lines = readFile();
+            optimalPath = getMaximumValuesFromLinesOfText(lines);
+            results = pyramidHelper.exportLongArrayTotal(optimalPath, " + ");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return results;
     }
 
 }
