@@ -19,18 +19,10 @@ public class PyramidService {
         this.calculator = new HexCalculator();
     }
 
-    public List<String> readFile() throws IOException, URISyntaxException {
+    public List<String> readFile() throws IOException {
         List<String> lines = new ArrayList<>();
 
-        try {
-            InputStream inputStream = ClassLoader.getSystemResourceAsStream(fileName);
-            if (inputStream != null) {
-                lines = new BufferedReader(new InputStreamReader(inputStream)).lines().toList();
-                inputStream.close();
-            }
-        } catch (IOException ioEx) {
-            throw ioEx;
-        }
+        lines = pyramidHelper.readFile(fileName);
 
         return lines;
     }
