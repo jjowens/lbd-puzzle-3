@@ -1,6 +1,10 @@
 package services;
 
+import models.PyramidCell;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class HexCalculator {
 
@@ -28,6 +32,16 @@ public class HexCalculator {
     public Long findMaxValue(String lineOfText) {
         Long[] lArray = splitColumnsIntoValues(lineOfText);
         return lArray[lArray.length - 1];
+    }
+
+    public List<PyramidCell> splitColumnsIntoPyramidCells(String lineOfText, int rowNumber) {
+        String[] strArray = lineOfText.split(" ");
+        List<PyramidCell> list = new ArrayList<PyramidCell>();
+
+        for(int col = 0; col < strArray.length; col++) {
+            list.add(new PyramidCell(strArray[col], rowNumber, col));
+        }
+        return list;
     }
 
 }
