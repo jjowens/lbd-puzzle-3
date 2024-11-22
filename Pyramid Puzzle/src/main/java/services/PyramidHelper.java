@@ -76,6 +76,10 @@ public class PyramidHelper {
         return String.format("%s = %s", lineOfText, sum);
     }
 
+    public Long getTotalFromPyramidCells(List<PyramidCell> pyramidCells) {
+        return pyramidCells.stream().filter(item -> item.getActualValue() > 0).mapToLong(PyramidCell::getActualValue).sum();
+    }
+
     public List<String> readFile(String resourceFilename) throws IOException {
         List<String> lines = new ArrayList<>();
 
@@ -130,7 +134,6 @@ public class PyramidHelper {
 
             sb.append("\n");
         }
-
         // # END ROW
         int extraPadding = 3;
         int totalSeparators = rowHeaderText.length() +
@@ -138,6 +141,16 @@ public class PyramidHelper {
                 originalHeaderText.length() +
                 actualHeaderText.length() +
                 extraPadding;
+
+        // # TOTAL ROW
+
+        sb.append(pipelineSeparator);
+        sb.append("Total = ");
+        sb.append(getTotalFromPyramidCells(pyramidCells));
+        sb.append(pipelineSeparator);
+        sb.append("\n");
+
+        // # END ROW
         sb.append(pipelineSeparator);
         sb.append(String.format("%s", separator.repeat(totalSeparators)));
         sb.append(pipelineSeparator);

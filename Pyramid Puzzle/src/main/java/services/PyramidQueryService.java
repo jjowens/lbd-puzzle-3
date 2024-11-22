@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PyramidQueryService {
 
@@ -45,12 +46,14 @@ public class PyramidQueryService {
     public List<PyramidCell> getOptimalPath() throws IOException {
         List<PyramidCell> optimalPath = new ArrayList<>();
 
-        for(int idx = 0; idx < totalLines; idx++) {
-            Long val = pyramidCellList.stream().filter(item -> item.getActualValue() && idx == item.getRow()).findFirst().get().getActualValue();
-            optimalPath.add()
-        }
+        for(int idx = 1; idx <= totalLines; idx++) {
+            int tempIdx = idx;
+            Optional<PyramidCell> pyramidCell = pyramidCellList.stream().filter(item -> tempIdx == item.getRow()).findFirst();
 
-        optimalPath = pyramidCellList.stream().filter(item -> item.)
+            if (pyramidCell.isPresent()) {
+                optimalPath.add(pyramidCell.get());
+            }
+        }
 
         return optimalPath;
     }

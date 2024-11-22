@@ -21,10 +21,11 @@ public class PyramidQueryServiceTest {
         List<PyramidCell> pyramidCells = new ArrayList<>();
 
         try {
-            pyramidCells = pyramidQueryService.getOptimalPath();
+            pyramidCells = pyramidQueryService.getAllCells();
 
-            assertTrue(!pyramidCells.isEmpty());
+            assertFalse(pyramidCells.isEmpty());
 
+            System.out.println("All Cells");
             System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
 
         } catch (Exception ex) {
@@ -42,8 +43,9 @@ public class PyramidQueryServiceTest {
         try {
             pyramidCells = pyramidQueryService.getOptimalPath();
 
-            assertTrue(!pyramidCells.isEmpty());
+            assertFalse(pyramidCells.isEmpty());
 
+            System.out.println(("Max Values"));
             System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
 
         } catch (Exception ex) {
