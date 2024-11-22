@@ -13,12 +13,11 @@ import java.util.List;
 public class PyramidQueryService {
 
     private final String fileName;
-    private final HexCalculator calculator;
-    private final PyramidHelper pyramidHelper = new PyramidHelper();
+    private final PyramidHelper pyramidHelper;
 
     public PyramidQueryService(String fileName) {
         this.fileName = fileName;
-        this.calculator = new HexCalculator();
+        this.pyramidHelper = new PyramidHelper();
     }
 
     public List<PyramidCell> getOptimalPath() throws IOException {
@@ -29,7 +28,7 @@ public class PyramidQueryService {
 
         int rowNumber = 1;
         for (String line : lines) {
-            pyramidCellList.addAll(calculator.splitColumnsIntoPyramidCells(line, rowNumber));
+            pyramidCellList.addAll(pyramidHelper.splitColumnsIntoPyramidCells(line, rowNumber));
             rowNumber++;
         }
 

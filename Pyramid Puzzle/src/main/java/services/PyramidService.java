@@ -11,12 +11,11 @@ import java.util.List;
 public class PyramidService {
 
     private final String fileName;
-    private final HexCalculator calculator;
-    private final PyramidHelper pyramidHelper = new PyramidHelper();
+    private final PyramidHelper pyramidHelper;
 
     public PyramidService(String fileName) {
         this.fileName = fileName;
-        this.calculator = new HexCalculator();
+        this.pyramidHelper = new PyramidHelper();
     }
 
     public List<String> readFile() throws IOException {
@@ -31,7 +30,7 @@ public class PyramidService {
         List<Long> longlist = new ArrayList<>();
 
         for(int idx=0; idx<linesOfText.size(); idx++) {
-            longlist.add(calculator.findMaxValue(linesOfText.get(idx)));
+            longlist.add(pyramidHelper.findMaxValue(linesOfText.get(idx)));
         }
 
         Long[] list = new Long[longlist.size()];
