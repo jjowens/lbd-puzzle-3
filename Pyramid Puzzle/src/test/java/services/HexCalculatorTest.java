@@ -9,26 +9,26 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HexCalculatorTest {
-    HexCalculator hexCalculator;
+    PyramidHelper helper;
     String shortLineOfText = "6a a9 04";
     String longLineOfText = "34 9f 01 7e 57 9b c1 9f 51 20 23 0f";
 
     @Before
     public void setup() {
-        hexCalculator = new HexCalculator();
+        helper = new PyramidHelper();
     }
 
     @DisplayName("split line into 3 columns")
     @Test
     public void splitLineInto3Columns() {
-        String[] result = hexCalculator.splitColumns(shortLineOfText);
+        String[] result = helper.splitColumns(shortLineOfText);
         assertEquals(3, result.length);
     }
 
     @DisplayName("split line into 12 columns")
     @Test
     public void splitLineInto12Columns() {
-        String[] result = hexCalculator.splitColumns(longLineOfText);
+        String[] result = helper.splitColumns(longLineOfText);
         assertEquals(12, result.length);
     }
 
@@ -37,7 +37,7 @@ public class HexCalculatorTest {
     @CsvSource(value = {"7c:124", "9a:154"}, delimiter = ':')
     public void parse_hexadecimals(String input, String expected) {
         setup();
-        Long result = hexCalculator.parseHexValue(input);
+        Long result = helper.parseHexValue(input);
         int expectedInt = Integer.parseInt(expected);
         assertEquals(expectedInt, result);
     }
@@ -45,7 +45,7 @@ public class HexCalculatorTest {
     @DisplayName("find max value from short line of text")
     @Test
     public void findMaxValueFrom_ShortLineOfText() {
-        Long result = hexCalculator.findMaxValue(shortLineOfText);
+        Long result = helper.findMaxValue(shortLineOfText);
 
         assertEquals(169, result);
     }
@@ -53,7 +53,7 @@ public class HexCalculatorTest {
     @DisplayName("find max value from long line of text")
     @Test
     public void findMaxValueFrom_LongLineOfText() {
-        Long result = hexCalculator.findMaxValue(longLineOfText);
+        Long result = helper.findMaxValue(longLineOfText);
 
         assertEquals(193, result);
     }
