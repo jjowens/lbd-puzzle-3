@@ -33,4 +33,24 @@ public class PyramidQueryServiceTest {
 
     }
 
+    @DisplayName("Get Max Values from all rows")
+    @Test
+    public void service_getMaxValuesFromAllRows_FromExample1() {
+        pyramidQueryService = new PyramidQueryService("example1.txt");
+        List<PyramidCell> pyramidCells = new ArrayList<>();
+
+        try {
+            pyramidCells = pyramidQueryService.getOptimalPath();
+
+            assertTrue(!pyramidCells.isEmpty());
+
+            System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
+
+        } catch (Exception ex) {
+            fail();
+        }
+
+    }
+
+
 }
