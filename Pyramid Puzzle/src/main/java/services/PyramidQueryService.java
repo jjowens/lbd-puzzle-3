@@ -61,4 +61,27 @@ public class PyramidQueryService {
 
         return optimalPath;
     }
+
+    public List<PyramidCell> getOptimalPathInReverse() throws IOException {
+        List<PyramidCell> optimalPath = new ArrayList<>();
+
+        int rowNumber = totalLines;
+
+        while(rowNumber > 0) {
+            int tempIdx = rowNumber;
+            Optional<PyramidCell> pyramidCell = pyramidCellList.stream()
+                    .filter(item -> tempIdx == item.getRow())
+                    .max(Comparator.comparingLong(item -> item.getActualValue()));
+
+            if (pyramidCell.isPresent()) {
+                optimalPath.add(pyramidCell.get());
+            }
+
+            rowNumber--;
+        }
+
+
+
+        return optimalPath;
+    }
 }
