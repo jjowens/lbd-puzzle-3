@@ -26,6 +26,7 @@ public class PyramidService {
         return lines;
     }
 
+    // FIND THE HIGHEST VALUE FROM EACH LINE, REGARDLESS OF COLUMN POSITION
     public Long[] getMaximumValuesFromLinesOfText(List<String> linesOfText) {
         List<Long> longlist = new ArrayList<>();
 
