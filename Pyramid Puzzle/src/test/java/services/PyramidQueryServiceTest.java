@@ -34,7 +34,7 @@ public class PyramidQueryServiceTest {
 
     }
 
-    @DisplayName("Get Max Values from all rows")
+    @DisplayName("Example 1. Get Max Values from all rows")
     @Test
     public void service_getMaxValuesFromAllRows_FromExample1() {
         pyramidQueryService = new PyramidQueryService("example1.txt");
@@ -49,9 +49,29 @@ public class PyramidQueryServiceTest {
             System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
 
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             fail();
         }
+    }
 
+    @DisplayName("Example 2. Get Max Values from all rows")
+    @Test
+    public void service_getMaxValuesFromAllRows_FromExample2() {
+        pyramidQueryService = new PyramidQueryService("example2.txt");
+        List<PyramidCell> pyramidCells = new ArrayList<>();
+
+        try {
+            pyramidCells = pyramidQueryService.getOptimalPath();
+
+            assertFalse(pyramidCells.isEmpty());
+
+            System.out.println(("Max Values"));
+            System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            fail();
+        }
     }
 
 
