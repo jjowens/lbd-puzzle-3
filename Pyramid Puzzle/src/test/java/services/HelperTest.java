@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HexCalculatorTest {
+public class HelperTest {
     PyramidHelper helper;
     String shortLineOfText = "6a a9 04";
     String longLineOfText = "34 9f 01 7e 57 9b c1 9f 51 20 23 0f";
