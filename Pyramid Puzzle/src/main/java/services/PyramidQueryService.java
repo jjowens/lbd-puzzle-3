@@ -1,16 +1,10 @@
 package services;
 
 import models.PyramidCell;
+import models.PyramidCellEnum;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PyramidQueryService {
 
@@ -80,8 +74,88 @@ public class PyramidQueryService {
             rowNumber--;
         }
 
+        return optimalPath;
+    }
 
+    public List<PyramidCell> getOptimalPathInReverseAndLineAbove() throws IOException {
+        List<PyramidCell> optimalPath = new ArrayList<>();
+
+        int rowNumber = totalLines;
+        Optional<PyramidCell> previousPyramidCell = Optional.empty();
+
+        while(rowNumber > 0) {
+            int tempRowNo = rowNumber;
+
+            Optional<PyramidCell> pyramidCell = Optional.empty();
+
+            // GET MAX VALUE FROM BOTTOM ROW
+            if (tempRowNo == totalLines) {
+                pyramidCell = pyramidCellList.stream()
+                        .filter(item -> tempRowNo == item.getRow())
+                        .max(Comparator.comparingLong(item -> item.getActualValue()));
+            } else {
+                // SEARCH IN LINE ABOVE. LOOK FOR MAX VALUES WITHIN TOUCHING DISTANCE
+                if (previousPyramidCell.isPresent()) {
+                    Optional<PyramidCell> finalPreviousPyramidCell = previousPyramidCell;
+
+                    // SEARCH RANGE FOR LINE ABOVE
+                    List<Integer> colIndexRange = getPyramidCellRange(finalPreviousPyramidCell);
+
+                    List<PyramidCell> testList = pyramidCellList.stream()
+                            .filter(item -> tempRowNo == item.getRow()
+                                            && Arrays.asList(colIndexRange).contains(item.getCol())).toList();
+
+                    pyramidCell = pyramidCellList.stream()
+                            .filter(item -> tempRowNo == item.getRow())
+                            .max(Comparator.comparingLong(item -> item.getActualValue()));
+
+                  /*  pyramidCell = pyramidCellList.stream()
+                            .filter(item -> tempRowNo == item.getRow()
+                                    && item.getCol() == finalPreviousPyramidCell.get().getCol())
+                            .max(Comparator.comparingLong(item -> item.getActualValue()));
+                   */
+                }
+            }
+
+            if (pyramidCell.isPresent()) {
+                optimalPath.add(0, pyramidCell.get());
+                previousPyramidCell = pyramidCell;
+            }
+
+            rowNumber--;
+        }
 
         return optimalPath;
     }
+
+    private List<Integer> getPyramidCellRange(Optional<PyramidCell> pyramidCell) {
+        List<Integer> cellRange = new ArrayList<>();
+
+        // RETURN DEFAULT
+        if (pyramidCell.isEmpty()) {
+            cellRange.add(-1);
+            cellRange.add(0);
+            cellRange.add(1);
+            return cellRange;
+        }
+
+        if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.NEITHER) {
+            cellRange.add(pyramidCell.get().getCol() - 1);
+            cellRange.add(pyramidCell.get().getCol());
+            cellRange.add(pyramidCell.get().getCol() + 1);
+        }
+
+        if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.FIRST_CELL) {
+            cellRange.add(pyramidCell.get().getCol());
+            cellRange.add(pyramidCell.get().getCol() + 1);
+        }
+
+        if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.LAST_CELL) {
+            cellRange.add(pyramidCell.get().getCol() - 1);
+            cellRange.add(pyramidCell.get().getCol() - 2);
+        }
+
+        return cellRange;
+    }
+
 }
