@@ -105,6 +105,25 @@ public class PyramidHelper {
         return lines;
     }
 
+    public String exportOptimalPath(List<PyramidCell> pyramidCells) {
+        StringBuilder sb = new StringBuilder();
+
+        int rowCount = pyramidCells.size();
+        int rowIncrement = 1;
+        for (PyramidCell pyramidCell : pyramidCells) {
+            sb.append(String.format("%s", pyramidCell.getOriginalValue()));
+
+            if (rowIncrement < rowCount) {
+                sb.append(" + ");
+                rowIncrement += 1;
+            }
+        }
+
+        sb.append(String.format(" = %s", getTotalFromPyramidCells(pyramidCells)));
+
+        return sb.toString();
+    }
+
     public String exportPyramidCellsToTable(List<PyramidCell> pyramidCells) {
         StringBuilder sb = new StringBuilder();
 
