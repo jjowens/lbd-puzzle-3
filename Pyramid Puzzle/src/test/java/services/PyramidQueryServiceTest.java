@@ -83,4 +83,22 @@ public class PyramidQueryServiceTest {
             fail();
         }
     }
+
+    public void service_getAllFilesOptimalPathInReverseAndLineAbove(String filename) {
+        pyramidQueryService = new PyramidQueryService(filename);
+        List<PyramidCell> pyramidCells = new ArrayList<>();
+
+        try {
+            pyramidCells = pyramidQueryService.getOptimalPathInReverseAndLineAbove();
+
+            assertFalse(pyramidCells.isEmpty());
+
+            System.out.println("Max Values");
+            System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            fail();
+        }
+    }
 }

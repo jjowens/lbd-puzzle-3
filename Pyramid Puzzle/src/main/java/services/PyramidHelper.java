@@ -54,7 +54,7 @@ public class PyramidHelper {
                 currentEnum = PyramidCellEnum.LAST_CELL;
             }
 
-            list.add(new PyramidCell(strArray[col], rowNumber, (col + 1), currentEnum));
+            list.add(new PyramidCell(strArray[col], rowNumber, col, currentEnum));
         }
         return list;
     }
@@ -152,7 +152,6 @@ public class PyramidHelper {
                 extraPadding;
 
         // # TOTAL ROW
-
         sb.append(pipelineSeparator);
         sb.append("Total = ");
         sb.append(getTotalFromPyramidCells(pyramidCells));

@@ -1,5 +1,6 @@
 package services;
 
+import models.ColumnRange;
 import models.PyramidCell;
 import models.PyramidCellEnum;
 
@@ -27,7 +28,7 @@ public class PyramidQueryService {
         List<String> lines = pyramidHelper.readFile(fileName);
         totalLines = lines.size();
 
-        int rowNumber = 1;
+        int rowNumber = 0;
         for (String line : lines) {
             pyramidCellList.addAll(pyramidHelper.splitColumnsIntoPyramidCells(line, rowNumber));
             rowNumber++;
@@ -80,16 +81,17 @@ public class PyramidQueryService {
     public List<PyramidCell> getOptimalPathInReverseAndLineAbove() throws IOException {
         List<PyramidCell> optimalPath = new ArrayList<>();
 
-        int rowNumber = totalLines;
+        int lastRowIndex = totalLines - 1;
+        int rowIndex = totalLines - 1;
         Optional<PyramidCell> previousPyramidCell = Optional.empty();
 
-        while(rowNumber > 0) {
-            int tempRowNo = rowNumber;
+        while(rowIndex != -1) {
+            int tempRowNo = rowIndex;
 
             Optional<PyramidCell> pyramidCell = Optional.empty();
 
             // GET MAX VALUE FROM BOTTOM ROW
-            if (tempRowNo == totalLines) {
+            if (tempRowNo == lastRowIndex) {
                 pyramidCell = pyramidCellList.stream()
                         .filter(item -> tempRowNo == item.getRow())
                         .max(Comparator.comparingLong(item -> item.getActualValue()));
@@ -98,22 +100,13 @@ public class PyramidQueryService {
                 if (previousPyramidCell.isPresent()) {
                     Optional<PyramidCell> finalPreviousPyramidCell = previousPyramidCell;
 
-                    // SEARCH RANGE FOR LINE ABOVE
-                    List<Integer> colIndexRange = getPyramidCellRange(finalPreviousPyramidCell);
-
-                    List<PyramidCell> testList = pyramidCellList.stream()
-                            .filter(item -> tempRowNo == item.getRow()
-                                            && Arrays.asList(colIndexRange).contains(item.getCol())).toList();
+                    // SEARCH RANGE BASED ON PREVIOUS LINE. MUST BE WITHIN TOUCHING DISTANCE
+                    ColumnRange colIndexRange = getPyramidCellRange(finalPreviousPyramidCell);
 
                     pyramidCell = pyramidCellList.stream()
-                            .filter(item -> tempRowNo == item.getRow())
-                            .max(Comparator.comparingLong(item -> item.getActualValue()));
-
-                  /*  pyramidCell = pyramidCellList.stream()
                             .filter(item -> tempRowNo == item.getRow()
-                                    && item.getCol() == finalPreviousPyramidCell.get().getCol())
+                            && (item.getCol() >= colIndexRange.getMin() && item.getCol() <= colIndexRange.getMax()))
                             .max(Comparator.comparingLong(item -> item.getActualValue()));
-                   */
                 }
             }
 
@@ -122,40 +115,40 @@ public class PyramidQueryService {
                 previousPyramidCell = pyramidCell;
             }
 
-            rowNumber--;
+            rowIndex--;
         }
 
         return optimalPath;
     }
 
-    private List<Integer> getPyramidCellRange(Optional<PyramidCell> pyramidCell) {
-        List<Integer> cellRange = new ArrayList<>();
+    private ColumnRange getPyramidCellRange(Optional<PyramidCell> pyramidCell) {
+        ColumnRange columnRange = null;
+
+        int min = 0;
+        int max = 0;
 
         // RETURN DEFAULT
         if (pyramidCell.isEmpty()) {
-            cellRange.add(-1);
-            cellRange.add(0);
-            cellRange.add(1);
-            return cellRange;
+            min = -1;
+            max = 1;
         }
 
         if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.NEITHER) {
-            cellRange.add(pyramidCell.get().getCol() - 1);
-            cellRange.add(pyramidCell.get().getCol());
-            cellRange.add(pyramidCell.get().getCol() + 1);
+            min = pyramidCell.get().getCol() - 1;
+            max = pyramidCell.get().getCol() + 1;
         }
 
         if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.FIRST_CELL) {
-            cellRange.add(pyramidCell.get().getCol());
-            cellRange.add(pyramidCell.get().getCol() + 1);
+            min = pyramidCell.get().getCol();
+            max = pyramidCell.get().getCol() + 1;
         }
 
         if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.LAST_CELL) {
-            cellRange.add(pyramidCell.get().getCol() - 1);
-            cellRange.add(pyramidCell.get().getCol() - 2);
+            min = pyramidCell.get().getCol() - 2;
+            max = pyramidCell.get().getCol() - 1;
         }
 
-        return cellRange;
+        return new ColumnRange(min, max);
     }
 
 }
