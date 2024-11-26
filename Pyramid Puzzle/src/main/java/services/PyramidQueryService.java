@@ -47,6 +47,7 @@ public class PyramidQueryService {
         for(int idx = 0; idx < totalLines; idx++) {
             int tempIdx = idx;
 
+            // LOOK FOR MAX VALUES WITHIN TOUCHING DISTANCE FROM LINE ABOVE
             ColumnRange colIndexRange = getPyramidCellRange(previousPyramidCell);
 
             Optional<PyramidCell> pyramidCell = pyramidCellList.stream()
@@ -54,6 +55,7 @@ public class PyramidQueryService {
                             && (item.getCol() >= colIndexRange.getMin() && item.getCol() <= colIndexRange.getMax()))
                     .max(Comparator.comparingLong(item -> item.getActualValue()));
 
+            // ADD CELL. SET UP NEXT SEARCH PARAMETERS
             if (pyramidCell.isPresent()) {
                 optimalPath.add(pyramidCell.get());
                 previousPyramidCell = Optional.of(pyramidCell.get());
@@ -64,27 +66,6 @@ public class PyramidQueryService {
     }
 
     public List<PyramidCell> getOptimalPathInReverse() throws IOException {
-        List<PyramidCell> optimalPath = new ArrayList<>();
-
-        int rowNumber = totalLines;
-
-        while(rowNumber > 0) {
-            int tempIdx = rowNumber;
-            Optional<PyramidCell> pyramidCell = pyramidCellList.stream()
-                    .filter(item -> tempIdx == item.getRow())
-                    .max(Comparator.comparingLong(item -> item.getActualValue()));
-
-            if (pyramidCell.isPresent()) {
-                optimalPath.add(pyramidCell.get());
-            }
-
-            rowNumber--;
-        }
-
-        return optimalPath;
-    }
-
-    public List<PyramidCell> getOptimalPathInReverseAndLineAbove() throws IOException {
         List<PyramidCell> optimalPath = new ArrayList<>();
 
         int lastRowIndex = totalLines - 1;
@@ -138,6 +119,7 @@ public class PyramidQueryService {
             min = -1;
             max = 1;
         } else {
+            // SET UP SEARCH PARAMETERS FOR COLUMNS
             if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.NEITHER) {
                 min = pyramidCell.get().getCol() - 1;
                 max = pyramidCell.get().getCol() + 1;
