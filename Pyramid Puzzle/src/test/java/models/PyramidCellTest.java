@@ -10,7 +10,7 @@ public class PyramidCellTest {
     @DisplayName("Check basic model for pyramid cell")
     @Test
     public void basic_PyramidCell() {
-        PyramidCell cell = new PyramidCell("1", 0,0);
+        PyramidCell cell = new PyramidCell("1", 0,0, PyramidCellEnum.NEITHER);
         assertEquals("1", cell.getOriginalValue());
         assertEquals(1, cell.getActualValue());
 
@@ -22,7 +22,7 @@ public class PyramidCellTest {
     @DisplayName("Check complex model for pyramid cell")
     @Test
     public void complex_PyramidCell() {
-        PyramidCell cell = new PyramidCell("d", 0,0);
+        PyramidCell cell = new PyramidCell("d", 0,0, PyramidCellEnum.NEITHER);
         assertEquals("d", cell.getOriginalValue());
         assertEquals(13, cell.getActualValue());
 

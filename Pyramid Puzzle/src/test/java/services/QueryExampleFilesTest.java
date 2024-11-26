@@ -44,4 +44,18 @@ public class QueryExampleFilesTest {
     public void service_getFirstFileOptimalPathInReverse(String filename) {
         pqs.service_getOptimalPathInReverse(filename);
     }
+
+    @DisplayName("Specific file only. Get optimal path in reverse based on last line and line above it")
+    @ParameterizedTest
+    @ValueSource(strings = {"example1.txt"})
+    public void service_getSpecificFileOptimalPathInReverseAndLineAbove(String filename) {
+        pqs.service_getSpecificFileOptimalPathInReverseAndLineAbove(filename);
+    }
+
+    @DisplayName("All files. Get optimal path in reverse based on last line and line above it")
+    @ParameterizedTest
+    @MethodSource("myFiles")
+    public void service_getAllFilesOptimalPathInReverseAndLineAbove(String filename) {
+        pqs.service_getAllFilesOptimalPathInReverseAndLineAbove(filename);
+    }
 }

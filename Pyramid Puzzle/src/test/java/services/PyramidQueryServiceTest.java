@@ -1,6 +1,7 @@
 package services;
 
 import models.PyramidCell;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,42 @@ public class PyramidQueryServiceTest {
 
         try {
             pyramidCells = pyramidQueryService.getOptimalPathInReverse();
+
+            assertFalse(pyramidCells.isEmpty());
+
+            System.out.println("Max Values");
+            System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            fail();
+        }
+    }
+
+    public void service_getSpecificFileOptimalPathInReverseAndLineAbove(String filename) {
+        pyramidQueryService = new PyramidQueryService(filename);
+        List<PyramidCell> pyramidCells = new ArrayList<>();
+
+        try {
+            pyramidCells = pyramidQueryService.getOptimalPathInReverseAndLineAbove();
+
+            assertFalse(pyramidCells.isEmpty());
+
+            System.out.println("Max Values");
+            System.out.println(pyramidHelper.exportPyramidCellsToTable(pyramidCells));
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            fail();
+        }
+    }
+
+    public void service_getAllFilesOptimalPathInReverseAndLineAbove(String filename) {
+        pyramidQueryService = new PyramidQueryService(filename);
+        List<PyramidCell> pyramidCells = new ArrayList<>();
+
+        try {
+            pyramidCells = pyramidQueryService.getOptimalPathInReverseAndLineAbove();
 
             assertFalse(pyramidCells.isEmpty());
 

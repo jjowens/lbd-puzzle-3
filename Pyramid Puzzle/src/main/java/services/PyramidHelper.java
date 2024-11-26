@@ -1,13 +1,13 @@
 package services;
 
 import models.PyramidCell;
+import models.PyramidCellEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,8 +44,17 @@ public class PyramidHelper {
         String[] strArray = lineOfText.split(" ");
         List<PyramidCell> list = new ArrayList<PyramidCell>();
 
+        int lastCol = strArray.length - 1;
         for(int col = 0; col < strArray.length; col++) {
-            list.add(new PyramidCell(strArray[col], rowNumber, col));
+            PyramidCellEnum currentEnum = PyramidCellEnum.NEITHER;
+
+            if (col == 0) {
+                currentEnum = PyramidCellEnum.FIRST_CELL;
+            } else if (col == lastCol) {
+                currentEnum = PyramidCellEnum.LAST_CELL;
+            }
+
+            list.add(new PyramidCell(strArray[col], rowNumber, col, currentEnum));
         }
         return list;
     }
@@ -143,7 +152,6 @@ public class PyramidHelper {
                 extraPadding;
 
         // # TOTAL ROW
-
         sb.append(pipelineSeparator);
         sb.append("Total = ");
         sb.append(getTotalFromPyramidCells(pyramidCells));
