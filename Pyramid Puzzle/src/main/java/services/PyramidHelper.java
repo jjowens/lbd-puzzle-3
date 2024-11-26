@@ -152,9 +152,14 @@ public class PyramidHelper {
                 extraPadding;
 
         // # TOTAL ROW
+        Long totalAmount = getTotalFromPyramidCells(pyramidCells);
+        String totalText = String.format("Total = %s", totalAmount);
+        String totalTextPadding = " ";
+        Integer totalTextPaddingAmount = totalSeparators - totalText.length();
+        String completeTotalText = String.format("%s" + totalText, totalTextPadding.repeat(totalTextPaddingAmount));
+
         sb.append(pipelineSeparator);
-        sb.append("Total = ");
-        sb.append(getTotalFromPyramidCells(pyramidCells));
+        sb.append(completeTotalText);
         sb.append(pipelineSeparator);
         sb.append("\n");
 

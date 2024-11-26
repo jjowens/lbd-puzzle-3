@@ -2,8 +2,10 @@ package services;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,11 +15,15 @@ class PyramidServiceTest {
     PyramidService pyramidService;
     PyramidHelper pyramidHelper = new PyramidHelper();
 
-    public static final String[] EXAMPLE_FILES = new String[]{"example1.txt", "example2.txt"};
+    static final String[] myFiles =  {"example1.txt", "example2.txt"};
+
+    static List<String> myFiles() {
+        return Arrays.asList(myFiles);
+    }
 
     @DisplayName("Read Example files")
     @ParameterizedTest
-    @ValueSource(strings = {"example1.txt", "example2.txt"})
+    @MethodSource("myFiles")
     void read_ExampleFiles(String fileName) {
         pyramidService = new PyramidService(fileName);
         List<String> lines;
@@ -35,7 +41,7 @@ class PyramidServiceTest {
 
     @DisplayName("Parse Example files")
     @ParameterizedTest
-    @ValueSource(strings = {"example1.txt", "example2.txt"})
+    @MethodSource("myFiles")
     void parse_ExampleFiles(String fileName) {
         pyramidService = new PyramidService(fileName);
         List<String> lines;
@@ -52,8 +58,5 @@ class PyramidServiceTest {
             fail();
 
         }
-
     }
-
-
 }
