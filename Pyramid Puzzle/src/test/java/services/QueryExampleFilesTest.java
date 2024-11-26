@@ -58,4 +58,5 @@ public class QueryExampleFilesTest {
     public void service_getAllFilesOptimalPathInReverseAndLineAbove(String filename) {
         pqs.service_getAllFilesOptimalPathInReverseAndLineAbove(filename);
     }
+
 }

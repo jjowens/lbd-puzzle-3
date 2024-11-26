@@ -65,4 +65,11 @@ public class QueryPartFilesTest {
         pqs.service_getAllFilesOptimalPathInReverseAndLineAbove(filename);
     }
 
+    @DisplayName("Get optimal path")
+    @ParameterizedTest
+    @ValueSource(strings = {"Part2.txt"})
+    public void service_getSpecificFileOptimalPath(String filename) {
+        pqs.service_getOptimalPath(filename);
+    }
+
 }
