@@ -57,6 +57,7 @@ public class PyramidQueryService {
 
             // ADD CELL. SET UP NEXT SEARCH PARAMETERS
             if (pyramidCell.isPresent()) {
+                pyramidCell.get().setHightlightPyramidCell(true);
                 optimalPath.add(pyramidCell.get());
                 previousPyramidCell = Optional.of(pyramidCell.get());
             }
@@ -98,6 +99,7 @@ public class PyramidQueryService {
             }
 
             if (pyramidCell.isPresent()) {
+                pyramidCell.get().setHightlightPyramidCell(true);
                 optimalPath.add(0, pyramidCell.get());
                 previousPyramidCell = pyramidCell;
             }
@@ -131,8 +133,8 @@ public class PyramidQueryService {
             }
 
             if (pyramidCell.get().getPyramidCellEnum() == PyramidCellEnum.LAST_CELL) {
-                min = pyramidCell.get().getCol() - 2;
-                max = pyramidCell.get().getCol() - 1;
+                min = pyramidCell.get().getCol() - 1;
+                max = pyramidCell.get().getCol() + 1;
             }
         }
 

@@ -7,6 +7,7 @@ public class PyramidCell {
     private final String originalValue;
     private final Long actualValue;
     private final PyramidCellEnum pyramidCellEnum;
+    private boolean hightlightPyramidCell = false;
 
     public PyramidCell(String val, int row, int col, PyramidCellEnum pyramidCellEnum) {
         this.row = row;
@@ -21,6 +22,11 @@ public class PyramidCell {
     public String getOriginalValue() { return originalValue; }
     public Long getActualValue() { return actualValue; }
     public PyramidCellEnum getPyramidCellEnum() { return pyramidCellEnum; }
+
+    public void setHightlightPyramidCell(boolean hightlightPyramidCell) {
+        this.hightlightPyramidCell = hightlightPyramidCell;
+    }
+    public boolean isHightlightPyramidCell() { return hightlightPyramidCell; }
 
     public String toString() {
         return "(" + row + "," + col + "," + originalValue + ", " + actualValue + ")";

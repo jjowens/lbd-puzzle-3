@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PyramidHelper {
 
@@ -105,6 +107,30 @@ public class PyramidHelper {
         return lines;
     }
 
+    public String readTemplate(String templateFilename) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> lines = new ArrayList<>();
+
+        try {
+            InputStream inputStream = ClassLoader.getSystemResourceAsStream(templateFilename);
+            if (inputStream != null) {
+                lines = new BufferedReader(new InputStreamReader(inputStream)).lines().toList();
+                inputStream.close();
+            }
+        } catch (IOException ioEx) {
+            throw ioEx;
+        }
+
+        if (!lines.isEmpty()) {
+            for(String line : lines) {
+                stringBuilder.append(line);
+                stringBuilder.append(System.lineSeparator());
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
     public String exportOptimalPath(List<PyramidCell> pyramidCells) {
         StringBuilder sb = new StringBuilder();
 
@@ -188,6 +214,51 @@ public class PyramidHelper {
         sb.append(pipelineSeparator);
 
         return sb.toString();
+    }
+
+    public String exportPyramidCellsToPreformat(List<PyramidCell> pyramidCells) {
+        StringBuilder sb = new StringBuilder();
+
+        int totalRows = pyramidCells.size() - 1;
+        for(int idx = 0; idx < totalRows; idx++) {
+            int tempRowIndex = idx;
+            List<PyramidCell> tempList = pyramidCells.stream().filter(item -> item.getRow() == tempRowIndex).toList();
+
+            String tempLine = "";
+
+            for (PyramidCell pyramidCell : tempList) {
+                if (pyramidCell.isHightlightPyramidCell()) {
+                    tempLine += String.format("<span class=\"highlighted\">%s</span> ",pyramidCell.getOriginalValue());
+                } else {
+                    tempLine += String.format("%s ",pyramidCell.getOriginalValue());
+                }
+            }
+
+            // WORKAROUND TO TRIM SPACE ON LAST CHARACTER
+            sb.append(tempLine.trim());
+            sb.append("\n");
+        }
+
+        return sb.toString().trim();
+    }
+
+    public String addPyramidCellsToTemplate(String templateName, List<PyramidCell> pyramidCells, String headerText) {
+        String htmlOutput = "";
+        String htmlTemplate = "";
+        String preformatHtml = exportPyramidCellsToPreformat(pyramidCells);
+
+        try {
+            htmlTemplate = readTemplate(templateName);
+            htmlOutput = htmlTemplate;
+
+            // REPLACE ALL KEYWORDS
+            htmlOutput = htmlOutput.replaceAll("--PYRAMID_OUTPUT--", preformatHtml);
+            htmlOutput = htmlOutput.replaceAll("--HEADERTEXT--", headerText);
+        } catch (Exception ex) {
+
+        }
+
+        return htmlOutput;
     }
 
 }
